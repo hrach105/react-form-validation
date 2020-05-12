@@ -4,8 +4,10 @@ export class Form extends Component {
     state = {
         email:'',
         password:'',
+        confirmPassword:'',
         emailEror: false,
         passwordError:false,
+        confirmPasswordError:false,
         success: false
     }
     handleChangeEmail = (e) => {
@@ -18,6 +20,11 @@ export class Form extends Component {
             password: e.target.value
         })
     } 
+    handleChangeConfirmPassword = (e) => {
+        this.setState({
+            confirmPassword: e.target.value
+        })
+    }
     handleSubmit = (e) => {
         e.preventDefault()
         if(this.state.email === ''){
@@ -28,8 +35,7 @@ export class Form extends Component {
             this.setState({
                 emailEror: false
             })
-        }
-       
+        }       
 
         if(this.state.password === ''){
             this.setState({
@@ -41,7 +47,17 @@ export class Form extends Component {
             })
         }
 
-        if(this.state.password !== '' &&  this.state.email !== '') {
+        if(this.state.confirmPassword === ''){
+            this.setState({
+                confirmPasswordError:true
+            })
+        } else {
+            this.setState({
+                confirmPasswordError:false
+            })
+        }
+
+        if(this.state.password !== '' &&  this.state.email && this.state.confirmPassword  !== '') {
             this.setState({
                 success: true
             })
@@ -56,7 +72,9 @@ export class Form extends Component {
          <form  onSubmit={this.handleSubmit}>
              { this.state.emailEror ? <p className="alert alert-danger"> email is empty </p> : null}
              { this.state.passwordError ? <p className="alert alert-danger">password is empty</p> : null}
+             {this.state.confirmPasswordError ? <p className="alert alert-danger">confirm password is empty</p> :null}
              { this.state.success ? <p className="alert alert-success">Success</p> : null}
+             
              <div className="card">
                  <div className="card-header">
                      Form Validation
@@ -72,7 +90,13 @@ export class Form extends Component {
              <div className="form-group">
                  <input 
                     type="password"
+                    name="password"
                     onChange={this.handleChangePassword}
+                 />
+                  <input 
+                    type="password"
+                    name="repeatPassword"
+                    onChange={this.handleChangeConfirmPassword}
                  />
              </div>
              <div className="form-group">
